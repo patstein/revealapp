@@ -1,0 +1,26 @@
+name: app
+channels:
+- conda-forge
+dependencies:
+- python=3.6
+- psycopg2=2.7.4
+- uwsgi=2.0.15
+- libiconv
+- pip:
+  - coverage==4.3.4
+  - flake8==3.5.0
+  - django==2.0.3
+  - easy-thumbnails==2.5
+  - django-extensions==2.0.6
+  - django-jwt-auth==0.0.2
+  - djangorestframework==3.8.2
+  - django-cors-headers==2.2.0
+  - coreapi==2.3.3
+  - djangorestframework-simplejwt==3.2.3
+  - pdftotext==2.1.1
+  - beautifulsoup4==4.6.3
+  - django-elasticsearch-dsl==0.5.1
+  - django-elasticsearch-dsl-drf==0.16.3
+
+
+

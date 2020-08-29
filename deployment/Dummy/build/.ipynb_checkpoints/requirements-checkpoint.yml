@@ -1,0 +1,13 @@
+name: syntheticus
+dependencies:
+  - python=3.7
+  - scipy
+  - requests
+  - pyyaml
+  - numpy
+  - pandas>0.25.0
+  - pip>19
+  - scikit-learn
+  - flask
+  - pip:
+      - flask_script

@@ -1,0 +1,23 @@
+.red {
+    color:red
+}
+
+.result {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:center;
+    align-content:space-around;
+    /*background-color: white;*/
+    margin: 40px;
+
+}
+
+.box {
+    /* background-color: grey; */
+}
+
+.box:hover{
+    cursor: pointer;
+    /* box-shadow: 5px 5px lightgrey; */
+}

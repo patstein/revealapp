@@ -1,0 +1,45 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    restart: always
+    volumes:
+    - static-files:/static-files
+    - media-files:/media-files
+    - ./nginx:/etc/nginx/conf.d
+    ports:
+    - '80:80'
+    - '443:443'
+
+  database:
+    image: postgres:11.0
+    restart: always
+    env_file:
+      - prod.env
+    volumes:
+      - database:/var/lib/postgresql/data
+
+  api:
+    image: registry.gitlab.propulsion-home.ch/document-annotation/config:master
+    restart: always
+    env_file:
+      - prod.env
+
+    depends_on:
+      - database
+    command: 'sh /scripts/run.sh'
+    volumes:
+      - static-files:/static-files
+      - media-files:/media-files
+
+volumes:
+  database:
+  media-files:
+    external: true
+  static-files:
+    external: true
+
+networks:
+  default:
+    external:
+      name: jacob

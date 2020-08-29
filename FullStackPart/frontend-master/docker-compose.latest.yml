@@ -1,0 +1,16 @@
+version: '3'
+services:
+  frontend:
+    image: registry.gitlab.propulsion-home.ch/document-annotation/frontend:latest
+    command: "bash -c 'rm -rf /frontend/* && cp -r /app/build/* /frontend'"
+    volumes:
+      - frontend:/frontend
+
+volumes:
+  frontend:
+    external: true
+
+networks:
+  default:
+    external:
+      name: jacob

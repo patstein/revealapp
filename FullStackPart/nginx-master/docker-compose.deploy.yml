@@ -1,0 +1,30 @@
+version: '3'
+services:
+  nginx:
+    image: registry.gitlab.propulsion-home.ch/document-annotation/nginx:latest
+    restart: always
+    env_file:
+      - ./nginx.env
+    command: "sh /start.sh"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - frontend:/frontend
+      - media-files:/media-files
+      - static-files:/static-files
+      - ./config:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/letsencrypt
+
+volumes:
+  frontend:
+    external: true
+  media-files:
+    external: true
+  static-files:
+    external: true
+
+networks:
+  default:
+    external:
+      name: jacob

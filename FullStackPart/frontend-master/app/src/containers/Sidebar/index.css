@@ -1,0 +1,32 @@
+.highlightedText {    
+    overflow-y: auto;
+    padding: 5%;
+    text-align: justify;
+    background-color: #DCDCDC;
+    max-height: 17vh;
+    z-index: 19;
+    position: relative;
+    width: auto;
+}
+
+.scrollable {
+    max-height: 80vh;
+    border-radius: 4px;
+    max-width: 80%;
+}
+
+.sidebar {
+    overflow-y: auto;
+    max-height: 80vh;
+    width: 100%;
+}
+.sidebarCard {
+    position: relative;
+    z-index: 20;
+    width: 95%;
+    overflow-y: auto;
+    width: 90%;
+}
+.saveDeleteButtons {
+    flex-direction: row;
+}

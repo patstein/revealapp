@@ -1,0 +1,19 @@
+/* use a hand cursor intead of arrow for the action buttons */
+.filepond--file-action-button {
+    cursor: pointer;
+}
+.filepond--root {
+    height: 200px;
+    width: 400px;
+}
+
+
+.cardUpload{
+    margin-top: 2%;
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    max-width: 50%;
+    background-color: #75e3ff;
+}

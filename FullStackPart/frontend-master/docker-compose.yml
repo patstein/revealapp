@@ -1,0 +1,8 @@
+version: '3'
+services:
+  frontend:
+    image: registry.gitlab.propulsion-home.ch/document-annotation/frontend:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/app

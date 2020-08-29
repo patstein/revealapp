@@ -1,0 +1,84 @@
+# To build and run:
+
+## Everything
+
+    sudo docker-compose -f build/docker-compose.yml up -d --build
+
+# To stop 
+## Everything
+    sudo docker-compose -f build/docker-compose.yml stop
+    
+
+# To invoke APIs:
+## GET
+
+    #local
+    curl localhost:5000/healthz
+
+    #from remote:
+    curl 128.199.132.126:5000/healthz
+
+## POST
+
+### Post Documents: To Post documents
+Once the documents have been uploaded to the platform the documents can be posted through the API to the DataScience webserver. For this the entire documents table (with columns ID and FullText) needs to be sent in json format.
+
+Syntax:
+
+    curl localhost:5000/postDocuments -d '<YOUR_DOCUMENT_TABLE_AS_JSON>' -H 'Content-Type: application/json'
+
+Example: 
+
+    curl localhost:5000/postDocuments -d ' [{"id_doc": 1, "id_user": 1, "id_tag": 1, "filename": "doc1.pdf", "title": "doc1", "content_text": "This is a random document with ID 1. In this document we are talking about cats. And there is also something about mice.", "content_html": "<p>This is a random document with ID 1.\r\nIn this document we are talking about cats. And there is also something about mice.", "date_uploaded": "2020-04-17T18:31:49.372861+02:00", "id_user": 1     },  { "id_doc": 2, "id_user": 1, "id_tag": 1,        "filename": "doc2.pdf", "title": "doc2", "content_text": "This is a random document with ID 2. In this document we are talking about dogs. And there is also something about mice.", "content_html": "<p>This is a random document with ID 2. In this document we are talking about dogs.\r\nAnd there is also something about mice.", "date_uploaded": "2020-04-17T18:31:49.372861+02:00", "id_user": 1     },  { "id_doc": 3, "id_user": 1, "id_tag": 1, "filename": "bla3.pdf", "title": "bla3", "content_text": "This is a random document with ID 3. this doc is exclusivly about Elephants. So no mice, cats nor anything else", "content_html": "<p>This is a random document with ID 3. this doc is exclusivly about Elephants.\r\nSo no mice, cats nor anything else", "date_uploaded": "2020-04-17T18:31:49.372861+02:00", "id_user": 1} ]' -H 'Content-Type: application/json'
+
+
+
+### Suggest: To generate new suggested tags from tags
+If the "Suggest"-Button is hit by the user the tags table is sent to the DataScience webserver through the API in json format.
+
+Syntax:
+
+    curl localhost:5000/suggestTags -d '<YOUR_TAGS_TABLE_AS_JSON>' -H 'Content-Type: application/json' 
+
+Example:
+
+    curl localhost:5000/suggestTags -d '[{"id_highlight":1,"id_doc":1,"id_user":1,"id_tag":1,"start_idx":37,"end_idx":80,"text":"In this document we are talking about cats.","suggested":0,"score":null,"id_parent_highlight":null,"accepted":null,"date_created":"2020-04-17T18:31:49.372861+02:00","date_updated":"2020-04-17T18:31:49.372861+02:00"},{"id_highlight":2,"id_doc":1,"id_user":1,"id_tag":2,"start_idx":80,"end_idx":120,"text":" And there is also something about mice.","suggested":0,"score":null,"id_parent_highlight":null,"accepted":null,"date_created":"2020-04-17T18:32:49.372861+02:00","date_updated":"2020-04-17T18:32:49.372861+02:00"}]' -H 'Content-Type: application/json'
+
+
+### TrainSuggest: To generated new suggested tags based on userfeedback in suggested tags table 
+If the "Train&Suggest"-Button is hit by the user, the tags table together with the suggested tags table is sent to the DataScience webserver through the API in json format.
+
+
+Syntax:
+
+    curl localhost:5000/trainSuggest -d '<"tags":<YOUR_TAGS_TABLE_JSON>' -H 'Content-Type: application/json'
+
+Example:
+
+    curl localhost:5000/trainSuggest -d '[{"id_highlight":1,"id_doc":1,"id_user":1,"id_tag":1,"start_idx":37,"end_idx":80,"text":"In this document we are talking about cats.","suggested":0,"score":null,"id_parent_highlight":null,"accepted":null,"date_created":"2020-04-17T18:31:49.372861+02:00","date_updated":"2020-04-17T18:31:49.372861+02:00"},{"id_highlight":2,"id_doc":1,"id_user":1,"id_tag":2,"start_idx":80,"end_idx":120,"text":" And there is also something about mice.","suggested": 0,"score":null,"id_parent_highlight":null,"accepted":null,"date_created":"2020-04-17T18:32:49.372861+02:00","date_updated":"2020-04-17T18:32:49.372861+02:00"},{"id_highlight":3,"id_doc":1,"id_user":1,"id_tag":1,"start_idx":80,"end_idx":120,"text":" And there is also something about mice.","suggested":1,"score":0.74,"id_parent_highlight":1,"accepted":1,"date_created":"2020-04-17T18:35:49.372861+02:00","date_updated":"2020-04-17T18:35:49.372861+02:00"},{"id_highlight":4,"id_doc":2,"id_user":1,"id_tag":1,"start_idx":80,"end_idx":120,"text":" And there is also something about mice.","suggested":1,"score":0.74,"id_parent_highlight":1,"accepted":1,"date_created":"2020-04-17T18:35:49.372861+02:00","date_updated":"2020-04-17T18:35:49.372861+02:00"},{"id_highlight":5,"id_doc":3,"id_user":1,"id_tag":1,"start_idx":36,"end_idx":76,"text":" this doc is exclusivly about Elephants.","suggested":1,"score":0.5,"id_parent_highlight":1,"accepted":0,"date_created":"2020-04-17T18:35:49.372861+02:00","date_updated":"2020-04-17T18:35:49.372861+02:00"},{"id_highlight":6,"id_doc":3,"id_user":1,"id_tag":1,"start_idx":76,"end_idx":112,"text":" So no mice, cats nor anything else.","suggested":1,"score":0.44,"id_parent_highlight":2,"accepted":1,"date_created":"2020-04-17T18:35:49.372861+02:00","date_updated":"2020-04-17T18:35:49.372861+02:00"}]' -H 'Content-Type: application/json'
+    
+
+
+### Set fuzziness: Set fuzziness influencing the similarity threshold for suggestions going forward
+
+Syntax:
+
+    curl localhost:5000/setFuzziness  -d '[{"fuzziness":<NEW_FUZZINESS>}]' -H 'Content-Type: application/json'
+
+Example:
+
+    curl localhost:5000/setFuzziness  -d '[{"fuzziness":0.345}]' -H 'Content-Type: application/json'
+    
+    
+    
+### /searchSuggestions Search for suggestions for custom input in search field
+
+Syntax:
+
+    curl localhost:5000/searchSuggestions  -d '[{"fuzziness":<NEW_FUZZINESS>}]' -H 'Content-Type: application/json'
+
+Example:
+
+    curl localhost:5000/searchSuggestions  -d '[{"text":"Something about elephants"}]' -H 'Content-Type: application/json'
+    
+    

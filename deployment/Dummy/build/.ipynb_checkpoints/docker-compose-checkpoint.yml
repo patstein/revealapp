@@ -1,0 +1,21 @@
+version: '2.4'
+services:
+
+
+  dummy_backend:
+    image: dummy_backend:latest
+    build:
+      context: ../
+      dockerfile: ./build/Dockerfile
+    volumes:
+      # for local deployment we log to the ../logs folder, which is
+      # part of the source code.
+      # for a production deployment we will log to a docker-managed volume (to be defined in docker-compose-deploy.yml)
+      - ../logs:/app/logs
+      #add location for server here
+      
+    ports:
+      - "8889:5002"
+    environment:
+      - MY_ENV_VAR=test  # an example how to set an environmental variable in the dummy_backend container
+    command: python serve_backend.py runserver

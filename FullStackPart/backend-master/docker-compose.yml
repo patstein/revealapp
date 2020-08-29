@@ -1,0 +1,52 @@
+version: '3'
+services:
+  database:
+    image: postgres:11.0
+    restart: always
+    env_file: database.env
+    ports:
+      - "5654:5432"
+    volumes:
+      - database:/var/lib/postgresql/data
+
+  app:
+    image: registry.gitlab.propulsion-home.ch/document-annotation/backend:latest
+    restart: always
+    command: "/usr/sbin/sshd -D"
+    env_file: dev.env
+    ports:
+      - "49279:22"
+      - "8875:8000"
+    volumes:
+      - ./media-files:/media-files
+      - ./static-files:/static-files
+      - ./app:/app
+      - ./scripts:/scripts
+    depends_on:
+      - database
+      - elasticsearch
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.1
+    container_name: elasticsearch
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+
+
+volumes:
+  database:
+  static-files:
+  media-files:
+  esdata1:
+    driver: local
+
